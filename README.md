@@ -6,14 +6,16 @@ A synthesizable 8-bit calculator processor built with **Verilog HDL** and implem
 
 ## Architecture & Features
 
-* **Finite State Machine (`fsm_controller.v`):** Synchronous control unit directing operand loading (`SAVE_A`, `SAVE_B`) and execution flow.
-* **Arithmetic Logic Unit (`alu.v`):** 8-bit combinational engine performing Addition, Subtraction, bitwise AND, and bitwise OR.
-* **Register File (`registers.v`):** Dedicated storage holding input operands and calculation outputs.
-* **Display Driver (`seven_seg_decoder.v`, `calculator_top.v`):** 7-segment decoder coupled with a dynamic 20-bit refresh counter to prevent display flickering.
+* **Finite State Machine (`fsm_controller.v`):** A synchronous Finite State Machine that acts as the system brain. It transitions between `IDLE`, `SAVE_A`, `SAVE_B`, and `EXECUTE` states based on push-button triggers, outputting precise write-enable control signals (`load_A`, `load_B`, `load_out`).
+* **Arithmetic Logic Unit (`alu.v`):** A combinational execution block performing 8-bit Addition (`00`), Subtraction (`01`), bitwise AND (`10`), and bitwise OR (`11`).
+* **Register File (`registers.v`):** Synchronous storage elements holding incoming switch data for Operand A and Operand B, as well as trapping the final ALU outcome for display persistence.
+* **7-Segment Display Decoder and Driver (`seven_seg_decoder.v`, `calculator_top.v`):** Converts 4-bit nibbles into active-low segment patterns and drives a dynamic 20-bit refresh multiplexing counter to prevent segment flickering.
 
 ---
 
-## FPGA Synthesis & Timing Results
+## FPGA Synthesis & Implementation Summary
+
+The design was fully synthesized, placed, routed, and mapped to hardware pins using custom Xilinx Design Constraints (`.xdc`).
 
 * **Target Device:** Spartan-7 (`xc7s25csga324-1`)
 * **Clock Frequency:** 100 MHz (10 ns period)
@@ -22,14 +24,16 @@ A synthesizable 8-bit calculator processor built with **Verilog HDL** and implem
 
 | Resource | Used | Available | Utilization % |
 | :--- | :--- | :--- | :--- |
-| **Slice LUTs** | 20 | 14,600 | < 1% |
-| **Slice Registers (FFs)** | 14 | 29,200 | < 1% |
+| **Slice LUTs (Look-Up Tables)** | 20 | 14,600 | < 1% |
+| **Slice Registers (FFs) (Flip-Flops)** | 14 | 29,200 | < 1% |
 | **Bonded IOB (Pins)** | 21 | 150 | 14% |
 | **Clock Buffers (BUFG)** | 1 | 32 | 3% |
 
 ---
 
-## Verification & Hardware Diagrams
+## Simulation and  Verification 
+
+System behavior was validated using both **Behavioral Simulation** in Vivado and waveform verification via **GTKWave / Icarus Verilog**.
 
 ### Elaborated RTL Schematic
 ![RTL Schematic](docs/rtl_schematic.png)
@@ -45,24 +49,24 @@ A synthesizable 8-bit calculator processor built with **Verilog HDL** and implem
 
 ---
 
-## Repository Structure
+## Repository Directory Structure
 
 ```text
 .
-├── .gitignore
-├── README.md
-├── constraints/
-│   └── constraints.xdc
-├── docs/
-│   ├── rtl_schematic.png
-│   ├── sim_waveform.png
-│   ├── timing_summary.png
-│   └── utilization_summary.png
-├── testbench/
-│   └── tb_calculator.v
-└── rtl/
-    ├── alu.v
-    ├── calculator_top.v
-    ├── fsm_controller.v
-    ├── registers.v
-    └── seven_seg_decoder.v
+├── .gitignore                         # Keeps Vivado junk files off git
+├── README.md                          # Project documentation
+├── constraints/                       # Pin Mapping and Constraints
+│   └── constraints.xdc                # Xilinx Design Constraints File 
+├── docs/                              # Waveform and Reports
+│   ├── rtl_schematic.png              # Screenshot of RTL Schematic 
+│   ├── sim_waveform.png               # Screenshot of Behavioral simulation waveform
+│   ├── timing_summary.png             # Screenshot of Timing Summary Report
+│   └── utilization_summary.png        # Screenshot of Utilization Report
+├── rtl/                               # RTL Source Files
+│   ├── alu.v                          # Combinational ALU Logic
+│   ├── calculator_top.v               # Top-Level wrapper and clock driver 
+│   ├── fsm_controller.v               # System control state machine 
+│   ├── registers.v                    # Internal register storage
+│   └── seven_seg_decoder.v            # Segment Decoder 
+└── testbench/                         # Simulation Files
+    └── tb_calculator.v                # Testbench for cycle verification
