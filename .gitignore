@@ -1,0 +1,26 @@
+# Vivado auto-generated project folders & caches
+*.runs/
+*.sim/
+*.srcs/
+*.hw/
+*.ip_user_files/
+*.cache/
+*.gen/
+
+# Vivado log and journal files
+*.log
+*.jou
+*.str
+*.pb
+*.wdf
+
+# Simulation output dumps
+*.vcd
+*.vvp
+*.wave
+xsim.dir/
+
+# Temporary OS and IDE files
+.DS_Store
+Thumbs.db
+.Xil/
