@@ -40,6 +40,7 @@ System behavior was validated using both **Behavioral Simulation** in Vivado and
 
 ### Behavioral Simulation Waveform
 ![Simulation Waveform](docs/simulation_waveform.png)
+![GTKwave Waveform](docs/GTKwave_simwavefrom.png)
 
 ### Resource Utilization Report
 ![Utilization Summary](docs/utilization_summary.png)
@@ -61,7 +62,7 @@ System behavior was validated using both **Behavioral Simulation** in Vivado and
 │   ├── rtl_schematic.png              # Screenshot of RTL Schematic 
 │   ├── sim_waveform.png               # Screenshot of Behavioral simulation waveform
 │   ├── timing_summary.png             # Screenshot of Timing Summary Report
-│   └── utilization_summary.png        # Screenshot of Utilization Report
+│   |── utilization_summary.png        # Screenshot of Utilization Report       
 ├── rtl/                               # RTL Source Files
 │   ├── alu.v                          # Combinational ALU Logic
 │   ├── calculator_top.v               # Top-Level wrapper and clock driver 
@@ -70,3 +71,17 @@ System behavior was validated using both **Behavioral Simulation** in Vivado and
 │   └── seven_seg_decoder.v            # Segment Decoder 
 └── testbench/                         # Simulation Files
     └── tb_calculator.v                # Testbench for cycle verification
+
+```
+### Icarus Verilog & GTKWave Setup Instructions
+
+To compile and simulate the project locally without opening Vivado:
+
+# 1. Compile RTL source files along with the testbench
+iverilog -o sim_out.vvp testbench/tb_calculator.v rtl/*.v
+
+# 2. Run the simulation executable to generate the VCD waveform file
+vvp sim_out.vvp
+
+# 3. Open waveform viewer
+gtkwave calculator_tb.vcd

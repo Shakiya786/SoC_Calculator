@@ -7,10 +7,10 @@ module alu (
   
   always @(*)begin
       case(opcode)
-        2'b00: result = A+B;
-        2'b01: result = A-B;
-        2'b10: result = A&B;
-        2'b11: result = A|B;
+        2'b00: result = A+B; // Addition
+        2'b01: result = A-B; // Subtraction
+        2'b10: result = A&B; // Bitwise AND 
+        2'b11: result = A|B; // Bitwise OR
         default: result = 8'h00;
         endcase
      end
